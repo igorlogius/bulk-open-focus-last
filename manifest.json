@@ -1,0 +1,17 @@
+{
+  "author": "igorlogius",
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+  "description": "",
+  "icons": {
+  },
+  "manifest_version": 2,
+  "name": "Focus Last Created Tab",
+  "permissions": [
+    "tabs"
+  ],
+  "version": "1.0.0"
+}
