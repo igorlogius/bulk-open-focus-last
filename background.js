@@ -3,7 +3,8 @@
 let timerId = null;
 
 function handleCreated(tab) {
-    if(!tab.openerTabId){
+
+    if(!tab.openerTabId && !tab.pinned && !tab.active){
         if(timerId !== null){
             clearTimeout(timerId);
         }
