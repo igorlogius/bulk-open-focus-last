@@ -1,27 +1,30 @@
 /* global browser */
 
-let timerId = null;
-let last_call = Date.now();   // load time of the addon is fine i hope
+let timerId;
+let last_call = null;
 
 function onCreated(tab) {
+    //
+    console.debug('=> onCreated ', tab.id);
 
     const now = Date.now();
-    //
-    if( !tab.openerTabId &&      //
-        !tab.pinned &&           //
-        !tab.active &&           //
-        (now - last_call) < 25   //
-    ) {
-        // queue this tab for focusing
-        if(timerId !== null){
-            clearTimeout(timerId);
-        }
-        timerId = setTimeout(async function() {
-            browser.tabs.update(tab.id, { active: true });
-            timerId = null;
-        }, 500);
+    if(last_call === null){
+        last_call = now;
     }
-    // ignore tab for focusing
+    if(  !tab.openerTabId &&
+         (now - last_call) < 35
+    ) {
+        // queue this tab for focusing and stop any pending setTimeouts
+        console.debug('==> queueing tab and clearing previously queued', tab.id);
+        //
+        clearTimeout(timerId);
+        timerId = setTimeout(function() {
+            //
+            console.debug('===> activating tab ', tab.id);
+            //browser.tabs.update(tab.id, { active: true }); // this only works with a fresh profile ... stangely enough
+            browser.tabs.highlight({ tabs: [tab.index] });  // this seems to work in other cases too, so we go with this for now
+        }, 1000);
+    }
     last_call = now;
 }
 
