@@ -30,4 +30,3 @@ function onCreated(tab) {
 
 browser.tabs.onCreated.addListener(onCreated);
 
-
